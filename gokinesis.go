@@ -44,6 +44,9 @@ type RecordConsumer interface {
 
 	// Shutdown is called before termination.
 	Shutdown(ShutdownType, *Checkpointer) error
+
+	// ShutdownRequested is called when the KCL has received a SIGINT or SIGTERM
+	ShutdownRequested() error
 }
 
 // ShutdownType indicates whether we have a graceful or zombie shutdown.
@@ -88,6 +91,9 @@ func Run(c RecordConsumer) {
 				shutdownType = ZombieShutdown
 			}
 			err = c.Shutdown(shutdownType, checkpointer)
+
+		case req.Action == "shutdownRequested":
+			err = c.ShutdownRequested()
 
 		default:
 			err = fmt.Errorf("Unsupported KCL action: %s", req.Action)

@@ -41,8 +41,10 @@ interface.
    further calls to the RecordConsumer are made after this.  Implementations
    must check the ShutdownType.  Invoke a checkpoint if it's graceful; do NOT
    checkpoint if it's ZOMBIE.
+4. ``ShutdownRequested()`` is called when the KCL has been requested to shutdown
+   through a SIGTERM or SIGINT.
 
-If the implementation returns an non-nil error on any of these three methods,
+If the implementation returns an non-nil error on any of these four methods,
 the Golang KCL will exit immediately with a non-zero exit code.
 
 In the Checkpointer, CheckpointAll() marks to the end of the most recently

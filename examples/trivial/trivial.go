@@ -51,6 +51,11 @@ func (ec *EchoConsumer) Shutdown(shutdownType kinesis.ShutdownType,
 	return nil
 }
 
+func (ec *EchoConsumer) ShutdownRequested() error {
+	fmt.Fprintf(ec.outfile, "shutdownRequested\n")
+	return nil
+}
+
 func main() {
 	var ec EchoConsumer
 	kinesis.Run(&ec)
